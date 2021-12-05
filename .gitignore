@@ -110,6 +110,10 @@ Icon
 .VolumeIcon.icns
 .com.apple.timemachine.donotpresent
 
+.clj-kondo/**/*
+.idea
+*.iml
+
 # Directories potentially created on remote AFP share
 .AppleDB
 .AppleDesktop
