@@ -7,10 +7,19 @@
                   (mapv #(Long/parseLong %))))]
     xs))
 
-(defn number-of-increases [m]
+(defn part-1 [m]
   (let [[x & xs] m]
     (if (empty? xs)
       0
-      (+ (number-of-increases xs) (if (< x (first xs)) 1 0)))))
+      (+ (part-1 xs) (if (< x (first xs)) 1 0)))))
 
-(number-of-increases (measurements))
+(defn part-2 [m]
+  (let [[w x y z & _] m]
+    (if (nil? z)
+      0
+      (+ (part-2 (rest m))
+         (if (< (+ w x y) (+ x y z)) 1 0)))))
+
+(part-1 (measurements))
+
+(part-2 (measurements))
