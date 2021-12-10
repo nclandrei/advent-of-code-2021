@@ -2,7 +2,7 @@
   (:require [clojure.java.io :as io]))
 
 (defn transform-data []
-  (with-open [rdr (io/reader (io/file "data/day-3.txt"))]
+  (with-open [rdr (io/reader (io/file "data/day-3-test.txt"))]
              (->> (line-seq rdr)
                   (mapv #(apply str %)))))
 
@@ -41,4 +41,32 @@
   (let [data (digits-count (parse-numbers (transform-data)))]
     (* (epsilon data) (gamma data))))
 
+(def most-common-bits
+  (let [d (digits-count (parse-numbers (transform-data)))]
+    (map #(if (>= % (/ el-cnt 2)) 1 0) d)))
+
+(def least-common-bits
+  (let [d (digits-count (parse-numbers (transform-data)))]
+    (map #(if (>= % (/ el-cnt 2)) 0 1) d)))
+
+(def numbers (parse-numbers (transform-data)))
+
+(defn rotate [l]
+  (lazy-cat (rest l) (list (first l))))
+
+(defn oxygen-generator-rating [d]
+  (loop [pattern most-common-bits]
+    (if (some #{pattern} d) pattern
+                            (recur (rotate pattern)))))
+
+(defn co2-scrubber-rating [d]
+  (loop [pattern least-common-bits]
+    (if (some #{pattern} d) pattern
+                            (recur (rotate pattern)))))
+
+(defn part-2 [d]
+  (* (base-two-from-decimal (co2-scrubber-rating d))
+     (base-two-from-decimal (oxygen-generator-rating d))))
+
 (part-1)
+(part-2 numbers)
